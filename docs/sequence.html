@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Saga sequence</title>
+<style>body{margin:0;padding:16px;font-family:'Segoe UI',Arial,sans-serif;background:#fff;}svg{width:100%;height:auto;display:block;margin:0 auto;}</style>
+</head>
+<body>
+<svg viewBox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#1d4ed8"/></marker>
+    <marker id="arrG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#16a34a"/></marker>
+    <marker id="arrR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#dc2626"/></marker>
+  </defs>
+
+  <g font-size="12" font-weight="700">
+    <rect x="60" y="20" width="130" height="32" rx="8" fill="#fff7e6" stroke="#d97706"/><text x="125" y="41" text-anchor="middle" fill="#92400e">saga orchestrator</text>
+    <rect x="280" y="20" width="120" height="32" rx="8" fill="#eff6ff" stroke="#2563eb"/><text x="340" y="41" text-anchor="middle" fill="#1d4ed8">order svc</text>
+    <rect x="480" y="20" width="120" height="32" rx="8" fill="#eff6ff" stroke="#2563eb"/><text x="540" y="41" text-anchor="middle" fill="#1d4ed8">payment svc</text>
+    <rect x="680" y="20" width="120" height="32" rx="8" fill="#fef2f2" stroke="#dc2626"/><text x="740" y="41" text-anchor="middle" fill="#b91c1c">inventory svc</text>
+  </g>
+  <g stroke="#cbd5e1" stroke-dasharray="4 4">
+    <line x1="125" y1="52" x2="125" y2="410"/>
+    <line x1="340" y1="52" x2="340" y2="410"/>
+    <line x1="540" y1="52" x2="540" y2="410"/>
+    <line x1="740" y1="52" x2="740" y2="410"/>
+  </g>
+
+  <!-- forward -->
+  <line x1="125" y1="80" x2="335" y2="80" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#arr)"/>
+  <text x="230" y="74" text-anchor="middle" font-size="11" fill="#1e40af">create order</text>
+  <line x1="125" y1="110" x2="535" y2="110" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#arr)"/>
+  <text x="330" y="104" text-anchor="middle" font-size="11" fill="#1e40af">charge balance</text>
+  <line x1="125" y1="140" x2="735" y2="140" stroke="#dc2626" stroke-width="1.4" marker-end="url(#arrR)"/>
+  <text x="430" y="134" text-anchor="middle" font-size="11" fill="#b91c1c">deduct stock → FAIL</text>
+
+  <!-- compensation -->
+  <text x="40" y="190" font-size="12" font-weight="700" fill="#0f172a">compensation (reverse)</text>
+  <line x1="125" y1="215" x2="535" y2="215" stroke="#16a34a" stroke-width="1.4" marker-end="url(#arrG)"/>
+  <text x="330" y="209" text-anchor="middle" font-size="11" fill="#15803d">refund balance</text>
+  <line x1="125" y1="245" x2="335" y2="245" stroke="#16a34a" stroke-width="1.4" marker-end="url(#arrG)"/>
+  <text x="230" y="239" text-anchor="middle" font-size="11" fill="#15803d">cancel order</text>
+
+  <text x="400" y="310" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">end: compensated</text>
+  <text x="400" y="335" text-anchor="middle" font-size="11" fill="#64748b">each step commits locally; failure is undone in reverse order.</text>
+</svg>
+</body>
+</html>
